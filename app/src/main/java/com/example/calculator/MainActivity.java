@@ -1,12 +1,11 @@
 package com.example.calculator;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -129,6 +128,15 @@ public class MainActivity extends AppCompatActivity {
         });
         buttonDecimal.setOnClickListener(v -> answerView.setText(answerView.getText() + "."));
 
+        buttonSign.setOnClickListener(v -> {
+            String answerViewText = answerView.getText().toString();
+            if (!answerViewText.isEmpty()) {
+                if (answerView.getText().toString().contains("-")) {
+                    answerView.setText(answerView.getText().toString().replace("-", ""));
+                } else answerView.setText("-" + answerView.getText());
+            }
+        });
+
         buttonAdd.setOnClickListener(v -> {
             if (answerView.getText().toString().trim().length() != 0) {
                 num1 = Float.parseFloat(answerView.getText() + "");
@@ -170,36 +178,40 @@ public class MainActivity extends AppCompatActivity {
 
             if (funcAdd) {
                 numAns = num1 + num2;
-                answerView.setText(numAns + "");
-                equationView.setText(equationView.getText() + Float.toString(num2) + "=");
+                equationView.setText(equationView.getText() + answerView.getText().toString() + "=");
                 funcAdd = false;
             }
             if (funcSub) {
                 numAns = num1 - num2;
-                answerView.setText(numAns + "");
-                equationView.setText(equationView.getText() + Float.toString(num2) + "=");
+                equationView.setText(equationView.getText() + answerView.getText().toString() + "=");
                 funcSub = false;
             }
             if (funcMul) {
                 numAns = num1 * num2;
-                answerView.setText(numAns + "");
-                equationView.setText(equationView.getText() + Float.toString(num2) + "=");
+                equationView.setText(equationView.getText() + answerView.getText().toString() + "=");
                 funcMul = false;
             }
             if (funcDiv) {
                 numAns = num1 / num2;
-                answerView.setText(numAns + "");
-                equationView.setText(equationView.getText() + Float.toString(num2) + "=");
+                equationView.setText(equationView.getText() + answerView.getText().toString() + "=");
                 funcDiv = false;
             }
+            String ans = String.valueOf(numAns).replaceAll("\\.0+$", "");
+            answerView.setText(ans + "");
         });
 
-        buttonC.setOnClickListener(v -> answerView.setText(""));
-
-        buttonCE.setOnClickListener(v -> {
+        buttonC.setOnClickListener(v -> {
             answerView.setText("");
             equationView.setText("");
             numAns = 0;
+        });
+
+        buttonCE.setOnClickListener(v -> {
+            if (equationView.getText().toString().contains("=")) {
+                answerView.setText("");
+                equationView.setText("");
+                numAns = 0;
+            } else answerView.setText("");
         });
 
         buttonDelete.setOnClickListener(v -> {
