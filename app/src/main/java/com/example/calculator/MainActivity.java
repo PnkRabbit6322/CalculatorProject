@@ -22,29 +22,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        button0 = (Button) findViewById(R.id.button0);
-        button1 = (Button) findViewById(R.id.button1);
-        button2 = (Button) findViewById(R.id.button2);
-        button3 = (Button) findViewById(R.id.button3);
-        button4 = (Button) findViewById(R.id.button4);
-        button5 = (Button) findViewById(R.id.button5);
-        button6 = (Button) findViewById(R.id.button6);
-        button7 = (Button) findViewById(R.id.button7);
-        button8 = (Button) findViewById(R.id.button8);
-        button9 = (Button) findViewById(R.id.button9);
-        buttonAdd = (Button) findViewById(R.id.buttonAdd);
-        buttonSub = (Button) findViewById(R.id.buttonSub);
-        buttonMul = (Button) findViewById(R.id.buttonMul);
-        buttonDiv = (Button) findViewById(R.id.buttonDiv);
-        buttonC = (Button) findViewById(R.id.buttonC);
-        buttonCE = (Button) findViewById(R.id.buttonCE);
-        buttonEqual = (Button) findViewById(R.id.buttonEqual);
-        buttonSign = (Button) findViewById(R.id.buttonSign);
-        buttonDecimal = (Button) findViewById(R.id.buttonDecimal);
-        buttonDelete = (Button) findViewById(R.id.buttonDelete);
+        button0 = findViewById(R.id.button0);
+        button1 = findViewById(R.id.button1);
+        button2 = findViewById(R.id.button2);
+        button3 = findViewById(R.id.button3);
+        button4 = findViewById(R.id.button4);
+        button5 = findViewById(R.id.button5);
+        button6 = findViewById(R.id.button6);
+        button7 = findViewById(R.id.button7);
+        button8 = findViewById(R.id.button8);
+        button9 = findViewById(R.id.button9);
+        buttonAdd = findViewById(R.id.buttonAdd);
+        buttonSub = findViewById(R.id.buttonSub);
+        buttonMul = findViewById(R.id.buttonMul);
+        buttonDiv = findViewById(R.id.buttonDiv);
+        buttonC = findViewById(R.id.buttonC);
+        buttonCE = findViewById(R.id.buttonCE);
+        buttonEqual = findViewById(R.id.buttonEqual);
+        buttonSign = findViewById(R.id.buttonSign);
+        buttonDecimal = findViewById(R.id.buttonDecimal);
+        buttonDelete = findViewById(R.id.buttonDelete);
 
-        answerView = (TextView) findViewById(R.id.answerView);
-        equationView = (TextView) findViewById(R.id.equationView);
+        answerView = findViewById(R.id.answerView);
+        equationView =  findViewById(R.id.equationView);
 
         button1.setOnClickListener(v -> {
             if (equationView.getText().toString().contains("=")) {
@@ -174,30 +174,36 @@ public class MainActivity extends AppCompatActivity {
         });
 
         buttonEqual.setOnClickListener(v -> {
-            num2 = Float.parseFloat(answerView.getText() + "");
+            if (equationView.getText().toString().trim().length() != 0) {
+                num2 = Float.parseFloat(answerView.getText() + "");
 
-            if (funcAdd) {
-                numAns = num1 + num2;
-                equationView.setText(equationView.getText() + answerView.getText().toString() + "=");
-                funcAdd = false;
+                if (funcAdd) {
+                    numAns = num1 + num2;
+                    equationView.setText(equationView.getText() + answerView.getText().toString() + "=");
+                    funcAdd = false;
+                }
+                if (funcSub) {
+                    numAns = num1 - num2;
+                    equationView.setText(equationView.getText() + answerView.getText().toString() + "=");
+                    funcSub = false;
+                }
+                if (funcMul) {
+                    numAns = num1 * num2;
+                    equationView.setText(equationView.getText() + answerView.getText().toString() + "=");
+                    funcMul = false;
+                }
+                if (funcDiv) {
+                    numAns = num1 / num2;
+                    equationView.setText(equationView.getText() + answerView.getText().toString() + "=");
+                    funcDiv = false;
+                }
+                String ans = String.valueOf(numAns).replaceAll("\\.0+$", "");
+                answerView.setText(ans + "");
+            } else if (answerView.getText().toString().trim().length() != 0) {
+                num1 = Float.parseFloat(answerView.getText() + "");
+                String ans = String.valueOf(num1).replaceAll("\\.0+$", "");
+                answerView.setText(ans + "");
             }
-            if (funcSub) {
-                numAns = num1 - num2;
-                equationView.setText(equationView.getText() + answerView.getText().toString() + "=");
-                funcSub = false;
-            }
-            if (funcMul) {
-                numAns = num1 * num2;
-                equationView.setText(equationView.getText() + answerView.getText().toString() + "=");
-                funcMul = false;
-            }
-            if (funcDiv) {
-                numAns = num1 / num2;
-                equationView.setText(equationView.getText() + answerView.getText().toString() + "=");
-                funcDiv = false;
-            }
-            String ans = String.valueOf(numAns).replaceAll("\\.0+$", "");
-            answerView.setText(ans + "");
         });
 
         buttonC.setOnClickListener(v -> {
@@ -215,9 +221,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         buttonDelete.setOnClickListener(v -> {
-            String s = answerView.getText().toString();
-            s = s.substring(0, s.length() - 1);
-            answerView.setText(s);
+            if (!answerView.getText().toString().isEmpty()) {
+                String s = answerView.getText().toString();
+                s = s.substring(0, s.length() - 1);
+                answerView.setText(s);
+            }
         });
     }
 }
